@@ -1,0 +1,39 @@
+# Maven
+target/
+*.jar
+*.war
+*.zip
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+.flattened-pom.xml
+
+# IDE
+.idea/
+*.iml
+*.iws
+*.ipr
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+*.log
+
+# Other
+.vscode/
+*.swp
+*.swo
+*~
+.env
+.gradle/
+build/
+
