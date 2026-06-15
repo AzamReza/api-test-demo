@@ -44,7 +44,7 @@ public class JSONPlaceholderAPITest {
             .body("[0]", hasKey("id"))
             .body("[0]", hasKey("title"))
             .body("[0]", hasKey("body"));
-        System.out.println("✁ETest Get All Posts - PASSED");
+        System.out.println("Test Get All Posts - PASSED");
     }
 
     @Test
@@ -62,7 +62,7 @@ public class JSONPlaceholderAPITest {
             .body("userId", equalTo(1))
             .body("title", notNullValue())
             .body("body", notNullValue());
-        System.out.println("✁ETest Get Specific Post - PASSED");
+        System.out.println("Test Get Specific Post - PASSED");
     }
 
     @Test
@@ -82,7 +82,7 @@ public class JSONPlaceholderAPITest {
             .body("[0]", hasKey("name"))
             .body("[0]", hasKey("email"))
             .body("[0]", hasKey("body"));
-        System.out.println("✁ETest Get Post Comments - PASSED");
+        System.out.println("Test Get Post Comments - PASSED");
     }
 
     @Test
@@ -95,7 +95,7 @@ public class JSONPlaceholderAPITest {
             .statusCode(200)
             .contentType("application/json")
             .body("size()", greaterThan(0));
-        System.out.println("✁ETest Get All Comments - PASSED");
+        System.out.println("Test Get All Comments - PASSED");
     }
 
     @Test
@@ -111,7 +111,7 @@ public class JSONPlaceholderAPITest {
             .body("postId", notNullValue())
             .body("name", notNullValue())
             .body("email", notNullValue());
-        System.out.println("✁ETest Get Specific Comment - PASSED");
+        System.out.println("Test Get Specific Comment - PASSED");
     }
 
     @Test
@@ -131,7 +131,7 @@ public class JSONPlaceholderAPITest {
             .body("[0]", hasKey("phone"))
             .body("[0]", hasKey("website"))
             .body("[0]", hasKey("company"));
-        System.out.println("✁ETest Get All Users - PASSED");
+        System.out.println("Test Get All Users - PASSED");
     }
 
     @Test
@@ -146,7 +146,7 @@ public class JSONPlaceholderAPITest {
             .body("id", equalTo(1))
             .body("name", notNullValue())
             .body("email", notNullValue());
-        System.out.println("✁ETest Get Specific User - PASSED");
+        System.out.println("Test Get Specific User - PASSED");
     }
 
     // ==================== POST Tests ====================
@@ -173,7 +173,7 @@ public class JSONPlaceholderAPITest {
             .body("title", equalTo("Test Post"))
             .body("body", equalTo("This is a test post created for automation testing"))
             .body("userId", equalTo(1));
-        System.out.println("✁ETest Create Post - PASSED");
+        System.out.println("Test Create Post - PASSED");
     }
 
     @Test
@@ -199,7 +199,7 @@ public class JSONPlaceholderAPITest {
             .body("postId", equalTo(1))
             .body("name", equalTo("Test Comment"))
             .body("email", equalTo("test@example.com"));
-        System.out.println("✁ETest Create Comment - PASSED");
+        System.out.println("Test Create Comment - PASSED");
     }
 
     // ==================== PUT Tests ====================
@@ -226,7 +226,7 @@ public class JSONPlaceholderAPITest {
             .body("id", equalTo(1))
             .body("title", equalTo("Updated Post Title"))
             .body("body", equalTo("This post has been updated"));
-        System.out.println("✁ETest Update Post - PASSED");
+        System.out.println("Test Update Post - PASSED");
     }
 
     @Test
@@ -249,7 +249,7 @@ public class JSONPlaceholderAPITest {
             .contentType("application/json")
             .body("id", equalTo(1))
             .body("name", equalTo("Updated Comment"));
-        System.out.println("✁ETest Update Comment - PASSED");
+        System.out.println("Test Update Comment - PASSED");
     }
 
     // ==================== DELETE Tests ====================
@@ -263,7 +263,7 @@ public class JSONPlaceholderAPITest {
             .delete("/posts/1")
         .then()
             .statusCode(200);
-        System.out.println("✁ETest Delete Post - PASSED");
+        System.out.println("Test Delete Post - PASSED");
     }
 
     @Test
@@ -275,7 +275,7 @@ public class JSONPlaceholderAPITest {
             .delete("/comments/1")
         .then()
             .statusCode(200);
-        System.out.println("✁ETest Delete Comment - PASSED");
+        System.out.println("Test Delete Comment - PASSED");
     }
 
     // ==================== Query Parameter Tests ====================
@@ -292,7 +292,7 @@ public class JSONPlaceholderAPITest {
             .contentType("application/json")
             .body("size()", greaterThan(0))
             .body("[0].userId", equalTo(1));
-        System.out.println("✁ETest Get Posts By User - PASSED");
+        System.out.println("Test Get Posts By User - PASSED");
     }
 
     @Test
@@ -307,7 +307,7 @@ public class JSONPlaceholderAPITest {
             .contentType("application/json")
             .body("size()", greaterThan(0))
             .body("[0].postId", equalTo(1));
-        System.out.println("✁ETest Get Comments By Post ID - PASSED");
+        System.out.println("Test Get Comments By Post ID - PASSED");
     }
 
     // ==================== Response Time Tests ====================
@@ -321,7 +321,7 @@ public class JSONPlaceholderAPITest {
         .then()
             .statusCode(200)
             .time(lessThan(5000L)); // Response should be less than 5 seconds
-        System.out.println("✁ETest Response Time for Get All Posts - PASSED");
+        System.out.println("Test Response Time for Get All Posts - PASSED");
     }
 }
 
