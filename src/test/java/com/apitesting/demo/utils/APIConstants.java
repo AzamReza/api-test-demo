@@ -4,26 +4,35 @@ package com.apitesting.demo.utils;
  * API Constants and Endpoints
  */
 public class APIConstants {
-    
+
     // Base URL
-    public static final String BASE_URL = "https://jsonplaceholder.typicode.com";
-    
+    public static final String BASE_URL = ConfigReader.getString("base.url");
+
+    // Mock server
+    public static final String MOCK_HOST = ConfigReader.getString("mock.host");
+    public static final int MOCK_PORT = ConfigReader.getInt("mock.port");
+    public static final String MOCK_BASE_URL = ConfigReader.getString("mock.base.url");
+
     // Endpoints
-    public static final String POSTS_ENDPOINT = "/posts";
-    public static final String COMMENTS_ENDPOINT = "/comments";
-    public static final String USERS_ENDPOINT = "/users";
-    public static final String ALBUMS_ENDPOINT = "/albums";
-    public static final String PHOTOS_ENDPOINT = "/photos";
-    public static final String TODOS_ENDPOINT = "/todos";
-    
+    public static final String POSTS_ENDPOINT = ConfigReader.getString("endpoint.posts");
+    public static final String COMMENTS_ENDPOINT = ConfigReader.getString("endpoint.comments");
+    public static final String USERS_ENDPOINT = ConfigReader.getString("endpoint.users");
+    public static final String ALBUMS_ENDPOINT = ConfigReader.getString("endpoint.albums");
+    public static final String PHOTOS_ENDPOINT = ConfigReader.getString("endpoint.photos");
+    public static final String TODOS_ENDPOINT = ConfigReader.getString("endpoint.todos");
+
+    // Mock endpoints
+    public static final String MOCK_USERS_ENDPOINT = ConfigReader.getString("mock.endpoint.users");
+    public static final String MOCK_POSTS_ENDPOINT = ConfigReader.getString("mock.endpoint.posts");
+
     // Request/Response Constants
-    public static final String CONTENT_TYPE_JSON = "application/json";
-    public static final int OK_STATUS = 200;
-    public static final int CREATED_STATUS = 201;
-    public static final int BAD_REQUEST_STATUS = 400;
-    public static final int NOT_FOUND_STATUS = 404;
-    
+    public static final String CONTENT_TYPE_JSON = ConfigReader.getString("content.type.json");
+    public static final int OK_STATUS = ConfigReader.getInt("status.ok");
+    public static final int CREATED_STATUS = ConfigReader.getInt("status.created");
+    public static final int BAD_REQUEST_STATUS = ConfigReader.getInt("status.bad.request");
+    public static final int NOT_FOUND_STATUS = ConfigReader.getInt("status.not.found");
+
     // Response Time Constants
-    public static final long MAX_RESPONSE_TIME = 5000L; // 5 seconds
+    public static final long MAX_RESPONSE_TIME = ConfigReader.getLong("response.max.time.ms");
 }
 

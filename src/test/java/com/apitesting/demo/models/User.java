@@ -1,10 +1,11 @@
 package com.apitesting.demo.models;
 
-import com.google.gson.JsonObject;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * User Model - Represents a User object from JSONPlaceholder API
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class User {
     private int id;
     private String name;
@@ -12,7 +13,6 @@ public class User {
     private String email;
     private String phone;
     private String website;
-    private JsonObject company;
 
     // Constructors
     public User() {
@@ -73,14 +73,6 @@ public class User {
         this.website = website;
     }
 
-    public JsonObject getCompany() {
-        return company;
-    }
-
-    public void setCompany(JsonObject company) {
-        this.company = company;
-    }
-
     @Override
     public String toString() {
         return "User{" +
@@ -90,7 +82,6 @@ public class User {
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
                 ", website='" + website + '\'' +
-                ", company='" + company + '\'' +
                 '}';
     }
 }

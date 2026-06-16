@@ -31,6 +31,8 @@ JSONPlaceholder is a free online REST API that you can use whenever you need som
 - **Build Tool:** Maven 3.6+
 - **Assertion Library:** Hamcrest Matchers
 - **JSON Parser:** Gson
+- **Reporting:** Allure Report 2.21.0
+- **Network Mocking:** WireMock 2.35.0
 - **IDE:** IntelliJ IDEA Recommended
 
 ## 📦 Project Structure
@@ -48,9 +50,14 @@ api-test-automation/
 │   │           ├── tests/
 │   │           │   ├── BaseTest.java
 │   │           │   ├── JSONPlaceholderAPITest.java
-│   │           │   └── AdvancedAPITest.java
+│   │           │   ├── AdvancedAPITest.java
+│   │           │   ├── NetworkMockingTest.java
+│   │           │   └── CustomAllureListener.java
 │   │           └── utils/
 │   │               └── APIConstants.java
+│   └── resources/
+│       ├── allure.properties
+│       └── config.properties
 ├── pom.xml
 └── README.md
 ```
@@ -84,6 +91,15 @@ api-test-automation/
 - ✅ Response body validation
 - ✅ Data consistency checks
 
+### **NetworkMockingTest.java**
+- ✅ Mock HTTP endpoints using WireMock
+- ✅ Mock GET/POST/PUT/DELETE requests
+- ✅ Mock error responses (404, 500)
+- ✅ Mock multiple sequential requests
+- ✅ Verify mock server receives expected requests
+- ✅ Test query parameters with mocked responses
+- ✅ Test JSON response validation with mocks
+
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -114,9 +130,47 @@ api-test-automation/
    ```
 
 5. **Run specific test method:**
-   ```bash
-   mvn test -Dtest=JSONPlaceholderAPITest#testGetAllPosts
-   ```
+    ```bash
+    mvn test -Dtest=JSONPlaceholderAPITest#testGetAllPosts
+    ```
+
+6. **Generate Allure Report:**
+    ```bash
+    mvn allure:report
+    ```
+    Then open: `target/site/allure-maven-plugin/index.html`
+
+## 📊 Allure Reporting
+
+This project includes **Allure Report** integration for comprehensive test reporting.
+
+### Features:
+- ✅ Detailed test execution history
+- ✅ Test results with pass/fail statistics
+- ✅ Request and response attachments
+- ✅ Test timeline and trends
+- ✅ Custom test names (without package prefix)
+- ✅ Feature and Story grouping
+- ✅ Severity levels
+
+### Generate and View Report:
+```bash
+# Run tests (generates Allure results)
+mvn test
+
+# Generate HTML report
+mvn allure:report
+
+# Report location
+target/site/allure-maven-plugin/index.html
+```
+
+### Custom Allure Listener:
+The project includes a **CustomAllureListener** that removes package prefixes from test class names in the Allure report:
+- **Before:** `com.apitesting.demo.tests.AdvancedAPITest`
+- **After:** `AdvancedAPITest`
+
+This provides cleaner, more readable test names in the report without affecting functionality.
 
 ## 📊 Sample Test Results
 
@@ -210,6 +264,9 @@ Available endpoints:
 5. **Descriptive Assertions** - Using Hamcrest matchers for clear validation
 6. **Response Logging** - Enabled via `enableLoggingOfRequestAndResponseIfValidationFails()`
 7. **Organized Package Structure** - Proper separation of concerns
+8. **Network Mocking** - WireMock for isolated testing
+9. **Allure Reporting** - Comprehensive test reporting with custom formatting
+10. **Custom Allure Listener** - Simplified test names in reports
 
 ## 💡 Tips for Extending Tests
 
