@@ -1,305 +1,122 @@
 # API Testing Automation Demo
 
-A comprehensive REST API testing automation framework using **RestAssured**, **Java**, and **Maven**.
+Single source of truth for this repository.
 
-## 📋 Project Overview
+## Overview
 
-This project demonstrates automated API testing for the **JSONPlaceholder** API - a free, public API perfect for testing.
+This project is a Java + Maven API automation framework for `https://jsonplaceholder.typicode.com` with:
 
-### **What is JSONPlaceholder?**
-JSONPlaceholder is a free online REST API that you can use whenever you need some fake data. It's great for:
-- Client-side testing
-- Server-side testing
-- Building mock data before building your API
-- Learning REST API concepts
+- REST API tests using RestAssured + JUnit 4
+- Network mocking tests using WireMock
+- Allure reporting
+- Test case ID traceability from `src/test/resources/TEST_CASES_DOCUMENTATION.md`
 
-**API URL:** https://jsonplaceholder.typicode.com
+## Current Test Suites
 
-### **Available Resources:**
-- **Posts** - Blog posts
-- **Comments** - Comments on posts
-- **Users** - User information
-- **Todos** - Todo items
-- **Albums** - Photo albums
-- **Photos** - Photos in albums
+- `JSONPlaceholderAPITest` (16 tests): CRUD, filtering, response-time checks
+- `AdvancedAPITest` (9 tests): deserialization, object assertions, consistency checks
+- `NetworkMockingTest` (10 tests): WireMock GET/POST/PUT/DELETE, errors, verification
+- `CoverageAPITest` (14 tests): contract checks, negative scenarios, query behavior, PATCH, operational headers
 
-## 🛠️ Technology Stack
+Total automated tests: **49**
 
-- **Language:** Java 11+
-- **Testing Framework:** JUnit 4
-- **API Testing Library:** RestAssured 5.3.2
-- **Build Tool:** Maven 3.6+
-- **Assertion Library:** Hamcrest Matchers
-- **JSON Parser:** Gson
-- **Reporting:** Allure Report 2.21.0
-- **Network Mocking:** WireMock 2.35.0
-- **IDE:** IntelliJ IDEA Recommended
+## Project Structure
 
-## 📦 Project Structure
-
-```
-api-test-automation/
-├── src/
-│   ├── test/
-│   │   └── java/
-│   │       └── com/apitesting/demo/
-│   │           ├── models/
-│   │           │   ├── Post.java
-│   │           │   ├── User.java
-│   │           │   └── Comment.java
-│   │           ├── tests/
-│   │           │   ├── BaseTest.java
-│   │           │   ├── JSONPlaceholderAPITest.java
-│   │           │   ├── AdvancedAPITest.java
-│   │           │   ├── NetworkMockingTest.java
-│   │           │   └── CustomAllureListener.java
-│   │           └── utils/
-│   │               └── APIConstants.java
-│   └── resources/
-│       ├── allure.properties
-│       └── config.properties
+```text
+API-test-demo/
 ├── pom.xml
-└── README.md
+├── README.md
+├── src/test/java/com/apitesting/demo/
+│   ├── models/
+│   │   ├── Comment.java
+│   │   ├── Post.java
+│   │   └── User.java
+│   ├── tests/
+│   │   ├── AdvancedAPITest.java
+│   │   ├── BaseTest.java
+│   │   ├── CoverageAPITest.java
+│   │   ├── CustomAllureListener.java
+│   │   ├── JSONPlaceholderAPITest.java
+│   │   └── NetworkMockingTest.java
+│   └── utils/
+│       └── APIConstants.java
+└── src/test/resources/
+    └── TEST_CASES_DOCUMENTATION.md
 ```
 
-## 📝 Test Cases Included
+## Prerequisites
 
-### **JSONPlaceholderAPITest.java**
-- ✅ Get all posts
-- ✅ Get specific post
-- ✅ Get post comments
-- ✅ Get all comments
-- ✅ Get specific comment
-- ✅ Get all users
-- ✅ Get specific user
-- ✅ Create new post (POST)
-- ✅ Create new comment (POST)
-- ✅ Update post (PUT)
-- ✅ Update comment (PUT)
-- ✅ Delete post (DELETE)
-- ✅ Delete comment (DELETE)
-- ✅ Query parameter filtering by User ID
-- ✅ Query parameter filtering by Post ID
-- ✅ Response time validation
+- Java 11+
+- Maven 3.6+
+- Internet access (for live JSONPlaceholder tests)
+- Port `8080` free (for WireMock tests)
 
-### **AdvancedAPITest.java**
-- ✅ Deserialize JSON response to Java objects
-- ✅ Object-level assertions
-- ✅ Array/Collection handling
-- ✅ Complex filtering scenarios
-- ✅ Response header validation
-- ✅ Response body validation
-- ✅ Data consistency checks
+## Run Commands
 
-### **NetworkMockingTest.java**
-- ✅ Mock HTTP endpoints using WireMock
-- ✅ Mock GET/POST/PUT/DELETE requests
-- ✅ Mock error responses (404, 500)
-- ✅ Mock multiple sequential requests
-- ✅ Verify mock server receives expected requests
-- ✅ Test query parameters with mocked responses
-- ✅ Test JSON response validation with mocks
-
-## 🚀 Getting Started
-
-### Prerequisites
-- Java 11 or higher installed
-- Maven 3.6 or higher installed
-- Internet connection (to access JSONPlaceholder API)
-
-### Installation
-
-1. **Clone/Download the project:**
-   ```bash
-   cd D:\EC-Demo-Automation\WP\API-test-demo
-   ```
-
-2. **Install dependencies:**
-   ```bash
-   mvn clean install
-   ```
-
-3. **Run all tests:**
-   ```bash
-   mvn test
-   ```
-
-4. **Run specific test class:**
-   ```bash
-   mvn test -Dtest=JSONPlaceholderAPITest
-   ```
-
-5. **Run specific test method:**
-    ```bash
-    mvn test -Dtest=JSONPlaceholderAPITest#testGetAllPosts
-    ```
-
-6. **Generate Allure Report:**
-    ```bash
-    mvn allure:report
-    ```
-    Then open: `target/site/allure-maven-plugin/index.html`
-
-## 📊 Allure Reporting
-
-This project includes **Allure Report** integration for comprehensive test reporting.
-
-### Features:
-- ✅ Detailed test execution history
-- ✅ Test results with pass/fail statistics
-- ✅ Request and response attachments
-- ✅ Test timeline and trends
-- ✅ Custom test names (without package prefix)
-- ✅ Feature and Story grouping
-- ✅ Severity levels
-
-### Generate and View Report:
 ```bash
-# Run tests (generates Allure results)
-mvn test
-
-# Generate HTML report
+mvn clean test
 mvn allure:report
-
-# Report location
-target/site/allure-maven-plugin/index.html
 ```
 
-### Custom Allure Listener:
-The project includes a **CustomAllureListener** that removes package prefixes from test class names in the Allure report:
-- **Before:** `com.apitesting.demo.tests.AdvancedAPITest`
-- **After:** `AdvancedAPITest`
+Run a specific class:
 
-This provides cleaner, more readable test names in the report without affecting functionality.
-
-## 📊 Sample Test Results
-
-When you run the tests, you'll see output like:
-```
-✓ Test Get All Posts - PASSED
-✓ Test Get Specific Post - PASSED
-✓ Test Get Post Comments - PASSED
-✓ Test Create Post - PASSED
-✓ Test Update Post - PASSED
-✓ Test Delete Post - PASSED
-✓ Test Response Time for Get All Posts - PASSED
-```
-
-## 🔑 Key RestAssured Features Used
-
-### 1. **GET Requests**
-```java
-given()
-    .accept("application/json")
-.when()
-    .get("/posts/1")
-.then()
-    .statusCode(200)
-    .body("id", equalTo(1));
-```
-
-### 2. **POST Requests**
-```java
-given()
-    .contentType("application/json")
-    .body(requestBody)
-.when()
-    .post("/posts")
-.then()
-    .statusCode(201);
-```
-
-### 3. **Query Parameters**
-```java
-given()
-    .queryParam("userId", 1)
-.when()
-    .get("/posts")
-.then()
-    .statusCode(200);
-```
-
-### 4. **Response Deserialization**
-```java
-Post post = given()
-.when()
-    .get("/posts/1")
-.as(Post.class);
-```
-
-### 5. **Assertions with Hamcrest Matchers**
-```java
-.body("size()", greaterThan(0))
-.body("[0].title", notNullValue())
-.body("[0].id", isA(Integer.class))
-```
-
-## 📚 RestAssured Documentation
-
-For more information, visit:
-- [RestAssured Official Documentation](https://rest-assured.io/)
-- [RestAssured GitHub](https://github.com/rest-assured/rest-assured)
-
-## JSONPlaceholder API Documentation
-
-Visit: https://jsonplaceholder.typicode.com
-
-Available endpoints:
-- GET `/posts` - Get all posts
-- GET `/posts/{id}` - Get specific post
-- POST `/posts` - Create a new post
-- PUT `/posts/{id}` - Update a post
-- DELETE `/posts/{id}` - Delete a post
-- GET `/comments` - Get all comments
-- GET `/comments/{id}` - Get specific comment
-- GET `/users` - Get all users
-- GET `/users/{id}` - Get specific user
-
-## 🎯 Best Practices Implemented
-
-1. **Base Test Class** - Common setup in `BaseTest.java`
-2. **Constants** - Centralized in `APIConstants.java`
-3. **Data Models** - Strong typing with `Post.java`, `User.java`, `Comment.java`
-4. **Modular Tests** - Organized into logical test classes
-5. **Descriptive Assertions** - Using Hamcrest matchers for clear validation
-6. **Response Logging** - Enabled via `enableLoggingOfRequestAndResponseIfValidationFails()`
-7. **Organized Package Structure** - Proper separation of concerns
-8. **Network Mocking** - WireMock for isolated testing
-9. **Allure Reporting** - Comprehensive test reporting with custom formatting
-10. **Custom Allure Listener** - Simplified test names in reports
-
-## 💡 Tips for Extending Tests
-
-1. **Add new test methods** to existing test classes
-2. **Create new model classes** for additional API resources (Albums, Todos, Photos)
-3. **Use data builders** for complex test data
-4. **Implement parametrized tests** for testing multiple scenarios
-5. **Add test reports** using Maven plugins
-
-## 🔧 Troubleshooting
-
-### Port/Connection Issues
-- The JSONPlaceholder API is cloud-based, ensure your internet connection is active
-
-### Maven Build Issues
 ```bash
-mvn clean install
+mvn test -Dtest=JSONPlaceholderAPITest
 ```
 
-### Test Failures
-- Check API endpoint availability at https://jsonplaceholder.typicode.com
-- Verify network connectivity
-- Review test output logs
+Run a specific method:
 
-## 📄 License
+```bash
+mvn test -Dtest=JSONPlaceholderAPITest#testGetAllPosts
+```
 
-This project is open source and available for educational and demo purposes.
+## Reporting and Logs
 
-## 👨‍💻 Author
+- Allure HTML report: `target/site/allure-maven-plugin/index.html`
+- Raw Allure results: `target/allure-results/*.json`
+- Execution log file: `target/test-execution.log`
 
-Created as a demonstration project for API automation testing.
+## Test Case ID Integration
 
----
+Test IDs are auto-resolved from `src/test/resources/TEST_CASES_DOCUMENTATION.md` and applied to:
 
-**Happy Testing! 🚀**
+- Log lines (prefix format): `[TC-XXX-000] ...`
+- Allure test name: `TC-XXX-000 - <test description>`
+- Allure label: `testCaseId`
+
+Example log format:
+
+```text
+[TC-ADV-007] Start test: Response Body Validation
+[TC-ADV-007] Test Response Body Validation - PASSED
+```
+
+## Key Implementation Notes
+
+- `BaseTest.java`
+  - common setup for RestAssured and logging
+  - Allure metadata setup before each test
+  - test case ID mapping and per-test context handling
+- `CustomAllureListener.java`
+  - removes package prefix from class names in Allure labels (`testClass`, `suite`)
+- `pom.xml`
+  - Surefire configured with Allure listener and `allure.results.directory`
+  - Allure report plugin configured
+
+## Troubleshooting
+
+- If `mvn allure:report` says results directory not found, run tests first:
+
+```bash
+mvn clean test
+mvn allure:report
+```
+
+- If live API tests fail, verify network access to `https://jsonplaceholder.typicode.com`.
+
+- If WireMock tests fail to start, check port `8080` availability.
+
+## Maintenance Rule
+
+Keep root-level docs minimal: this `README.md` is the only root markdown file.
 

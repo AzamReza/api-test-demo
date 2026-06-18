@@ -5,6 +5,7 @@ This document describes the automated API test cases implemented in:
 - `src/test/java/com/apitesting/demo/tests/JSONPlaceholderAPITest.java`
 - `src/test/java/com/apitesting/demo/tests/AdvancedAPITest.java`
 - `src/test/java/com/apitesting/demo/tests/NetworkMockingTest.java`
+- `src/test/java/com/apitesting/demo/tests/CoverageAPITest.java`
 
 ## 2. Test Environment and Preconditions
 1. Java 11+ and Maven are installed.
@@ -385,9 +386,142 @@ This document describes the automated API test cases implemented in:
 
 ---
 
-## 7. Traceability Summary
-- **Total documented automated test cases:** 35
+## 7. Coverage API Test Cases (`CoverageAPITest`)
+
+### TC-COV-001: Validate posts contract and cardinality
+- **Method:** `testPostsCollectionContract`
+- **Steps:**
+  1. Send `GET /posts`.
+  2. Validate status, payload shape, and expected count.
+- **Expected Result:**
+  - Status `200`
+  - Response size `100`
+  - Each post includes `userId`, `id`, `title`, `body`
+
+### TC-COV-002: Validate comments contract and cardinality
+- **Method:** `testCommentsCollectionContract`
+- **Steps:**
+  1. Send `GET /comments`.
+  2. Validate status, payload shape, and expected count.
+- **Expected Result:**
+  - Status `200`
+  - Response size `500`
+  - Each comment includes `postId`, `id`, `name`, `email`, `body`
+
+### TC-COV-003: Validate users contract and cardinality
+- **Method:** `testUsersCollectionContract`
+- **Steps:**
+  1. Send `GET /users`.
+  2. Validate user object and nested structure.
+- **Expected Result:**
+  - Status `200`
+  - Response size `10`
+  - User includes core and nested fields (`address.geo`, `company.name`)
+
+### TC-COV-004: Non-existing post should return 404
+- **Method:** `testGetNonExistingPostReturns404`
+- **Steps:**
+  1. Send `GET /posts/101`.
+  2. Validate status code.
+- **Expected Result:**
+  - Status `404`
+
+### TC-COV-005: Non-existing comment should return 404
+- **Method:** `testGetNonExistingCommentReturns404`
+- **Steps:**
+  1. Send `GET /comments/501`.
+  2. Validate status code.
+- **Expected Result:**
+  - Status `404`
+
+### TC-COV-006: Non-existing user should return 404
+- **Method:** `testGetNonExistingUserReturns404`
+- **Steps:**
+  1. Send `GET /users/11`.
+  2. Validate status code.
+- **Expected Result:**
+  - Status `404`
+
+### TC-COV-007: Unknown user filter should return empty posts
+- **Method:** `testFilterPostsByUnknownUserReturnsEmptyList`
+- **Steps:**
+  1. Send `GET /posts?userId=9999`.
+  2. Validate empty array response.
+- **Expected Result:**
+  - Status `200`
+  - Response size `0`
+
+### TC-COV-008: Unknown post filter should return empty comments
+- **Method:** `testFilterCommentsByUnknownPostReturnsEmptyList`
+- **Steps:**
+  1. Send `GET /comments?postId=9999`.
+  2. Validate empty array response.
+- **Expected Result:**
+  - Status `200`
+  - Response size `0`
+
+### TC-COV-009: Known username filter should return deterministic user
+- **Method:** `testFilterUsersByKnownUsername`
+- **Steps:**
+  1. Send `GET /users?username=Bret`.
+  2. Validate returned user identity.
+- **Expected Result:**
+  - Status `200`
+  - Response size `1`
+  - Returned user has `id=1` and `username=Bret`
+
+### TC-COV-010: Validate unique user emails
+- **Method:** `testUsersContainUniqueValidEmails`
+- **Steps:**
+  1. Send `GET /users`.
+  2. Extract `email` values and validate uniqueness/format.
+- **Expected Result:**
+  - No duplicate email values
+  - All emails contain `@`
+
+### TC-COV-011: Validate _limit query parameter
+- **Method:** `testPostsLimitQueryParameter`
+- **Steps:**
+  1. Send `GET /posts?_limit=5`.
+  2. Validate result count.
+- **Expected Result:**
+  - Status `200`
+  - Response size `5`
+
+### TC-COV-012: Validate descending sort by ID
+- **Method:** `testPostsSortByIdDescending`
+- **Steps:**
+  1. Send `GET /posts?_sort=id&_order=desc&_limit=3`.
+  2. Validate sorted IDs.
+- **Expected Result:**
+  - Status `200`
+  - IDs exactly `[100, 99, 98]`
+
+### TC-COV-013: Validate PATCH partial update
+- **Method:** `testPatchPostPartialUpdate`
+- **Steps:**
+  1. Send `PATCH /posts/1` with only `title` in request body.
+  2. Validate response fields.
+- **Expected Result:**
+  - Status `200`
+  - `id=1`, `userId=1`
+  - `title` reflects patched value
+
+### TC-COV-014: Validate operational response headers
+- **Method:** `testResponseHeadersContainOperationalMetadata`
+- **Steps:**
+  1. Send `GET /posts`.
+  2. Validate key operational headers.
+- **Expected Result:**
+  - Status `200`
+  - `Cache-Control`, `ETag`, `X-Ratelimit-Limit` are present and non-empty
+
+---
+
+## 8. Traceability Summary
+- **Total documented automated test cases:** 49
   - JSONPlaceholder API Suite: 16
   - Advanced API Suite: 9
   - Network Mocking Suite: 10
+  - Coverage API Suite: 14
 
