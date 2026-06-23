@@ -1,0 +1,49 @@
+TC ID,Test Case,Method,Endpoint,Expected,Status,Validation
+TC-NMK-001,Mocked GET user data request,testMockedGetUserData,GET /mock/users/1,200 OK with mocked user payload,Active,"status code, content-type, id/name/email/phone equality"
+TC-NMK-002,Mocked GET posts list array response,testMockedGetPostsList,GET /mock/posts,200 OK with 2 mocked posts,Active,"status code, content-type, array size, id/title checks"
+TC-NMK-003,Mocked POST create user request,testMockedCreateUser,POST /mock/users,201 Created with mocked user response,Active,"status code, content-type, id/name/email equality"
+TC-NMK-004,Mocked PUT update user request,testMockedUpdateUser,PUT /mock/users/1,200 OK with updated mocked user response,Active,"status code, content-type, id/name/email equality"
+TC-NMK-005,Mocked DELETE remove user request,testMockedDeleteUser,DELETE /mock/users/1,204 No Content,Active,status code only
+TC-NMK-006,Verify mock server received expected request,testVerifyMockServerRequest,GET /mock/users/1,200 OK and exactly one request captured,Active,"status code plus WireMock verify(exactly(1))"
+TC-NMK-007,Mocked error response 404 scenario,testMockedErrorResponse404,GET /mock/users/999,404 Not Found with error body,Active,"status code, content-type, error message equality"
+TC-NMK-008,Mocked error response 500 scenario,testMockedErrorResponse500,POST /mock/users,500 Internal Server Error with error body,Active,"status code, content-type, error message equality"
+TC-NMK-009,Mocked GET with query parameters,testMockedGetWithQueryParameters,GET /mock/posts?userId=1,200 OK with filtered mocked data,Active,"status code, content-type, size and userId checks"
+TC-NMK-010,Mocked multiple sequential requests,testMockedMultipleSequentialRequests,POST /mock/users then GET /mock/users/101,First 201 Created then 200 OK,Active,sequential status/id/email checks
+TC-PST-001,Get all posts,testGetAllPosts,GET /posts,200 OK with non-empty posts collection,Active,"status code, content-type, size>0, required keys"
+TC-PST-002,Get a specific post,testGetSpecificPost,GET /posts/1,200 OK with post id 1,Active,"status code, content-type, id/userId equality, non-null title/body"
+TC-PST-003,Create post,testCreatePost,POST /posts,201 Created with echoed request fields,Active,"status code, content-type, id non-null, field equality"
+TC-PST-004,Update post,testUpdatePost,PUT /posts/1,200 OK with updated post payload,Active,"status code, content-type, id/title/body equality"
+TC-PST-005,Delete post,testDeletePost,DELETE /posts/1,200 OK,Active,status code only
+TC-PST-006,Filter posts by userId,testGetPostsByUser,GET /posts?userId=1,200 OK with filtered records,Active,"status code, content-type, size>0, userId equality"
+TC-PST-007,404 for missing post,testGetNonExistingPostReturns404,GET /posts/101,404 Not Found,Active,status code only
+TC-PST-008,_limit + sort boundary check,testPostsLimitAndSort,GET /posts?_sort=id&_order=desc&_limit=3,200 OK with deterministic top ids,Active,"size=3 and ids [100,99,98]"
+TC-PST-009,Response-time threshold,testResponseTimeForGetAllPosts,GET /posts,200 OK within max threshold,Active,status code and response-time assertion
+TC-CMT-001,Get all comments,testGetAllComments,GET /comments,200 OK with non-empty comments collection,Active,"status code, content-type, size>0, required keys"
+TC-CMT-002,Get a specific comment,testGetSpecificComment,GET /comments/1,200 OK with comment id 1,Active,"status code, content-type, id equality, non-null fields"
+TC-CMT-003,Create comment,testCreateComment,POST /comments,201 Created with echoed request fields,Active,"status code, content-type, id non-null, field equality"
+TC-CMT-004,Update comment,testUpdateComment,PUT /comments/1,200 OK with updated comment payload,Active,"status code, content-type, id/name equality"
+TC-CMT-005,Delete comment,testDeleteComment,DELETE /comments/1,200 OK,Active,status code only
+TC-CMT-006,Filter comments by postId,testGetCommentsByPostId,GET /comments?postId=1,200 OK with filtered records,Active,"status code, content-type, size>0, postId equality"
+TC-CMT-007,404 for missing comment,testGetNonExistingCommentReturns404,GET /comments/501,404 Not Found,Active,status code only
+TC-CMT-008,Empty filter result for unknown postId,testFilterCommentsByUnknownPostReturnsEmptyList,GET /comments?postId=9999,200 OK with empty array,Active,status code and size=0
+TC-ALB-001,Get all albums,testGetAllAlbums,GET /albums,200 OK with non-empty albums collection,Active,"status code, content-type, size>0, required keys"
+TC-ALB-002,Get a specific album,testGetSpecificAlbum,GET /albums/1,200 OK with album id 1,Active,"status code, content-type, id/userId equality, title non-null"
+TC-ALB-003,Filter albums by userId,testGetAlbumsByUser,GET /albums?userId=1,200 OK with filtered records,Active,"status code, content-type, size>0, userId equality"
+TC-ALB-004,404 for missing album,testGetNonExistingAlbumReturns404,GET /albums/101,404 Not Found,Active,status code only
+TC-ALB-005,Empty filter result for unknown userId,testFilterAlbumsByUnknownUserReturnsEmptyList,GET /albums?userId=9999,200 OK with empty array,Active,status code and size=0
+TC-PHT-001,Get all photos,testGetAllPhotos,GET /photos,200 OK with non-empty photos collection,Active,"status code, content-type, size>0, required keys"
+TC-PHT-002,Get a specific photo,testGetSpecificPhoto,GET /photos/1,200 OK with photo id 1,Active,"status code, content-type, id/albumId equality, non-null urls"
+TC-PHT-003,Filter photos by albumId,testGetPhotosByAlbumId,GET /photos?albumId=1,200 OK with filtered records,Active,"status code, content-type, size>0, albumId equality"
+TC-PHT-004,404 for missing photo,testGetNonExistingPhotoReturns404,GET /photos/5001,404 Not Found,Active,status code only
+TC-PHT-005,Empty filter result for unknown albumId,testFilterPhotosByUnknownAlbumReturnsEmptyList,GET /photos?albumId=9999,200 OK with empty array,Active,status code and size=0
+TC-TDO-001,Get all todos,testGetAllTodos,GET /todos,200 OK with non-empty todos collection,Active,"status code, content-type, size>0, required keys"
+TC-TDO-002,Get a specific todo,testGetSpecificTodo,GET /todos/1,200 OK with todo id 1,Active,"status code, content-type, id/userId equality, non-null fields"
+TC-TDO-003,Filter todos by completed status,testGetCompletedTodos,GET /todos?completed=true,200 OK with filtered records,Active,"status code, content-type, size>0, completed=true"
+TC-TDO-004,404 for missing todo,testGetNonExistingTodoReturns404,GET /todos/201,404 Not Found,Active,status code only
+TC-TDO-005,Empty filter result for unknown userId,testFilterTodosByUnknownUserReturnsEmptyList,GET /todos?userId=9999,200 OK with empty array,Active,status code and size=0
+TC-USR-001,Get all users,testGetAllUsers,GET /users,200 OK with non-empty users collection,Active,"status code, content-type, size>0, required keys"
+TC-USR-002,Get a specific user,testGetSpecificUser,GET /users/1,200 OK with user id 1,Active,"status code, content-type, id equality, non-null name/email"
+TC-USR-003,404 for missing user,testGetNonExistingUserReturns404,GET /users/11,404 Not Found,Active,status code only
+TC-USR-004,Known username filter returns one record,testFilterUsersByKnownUsername,GET /users?username=Bret,200 OK with deterministic single record,Active,"status code, content-type, size=1, id=1, username=Bret"
+TC-USR-005,Unique and valid user emails,testUsersContainUniqueValidEmails,GET /users,200 OK with unique valid emails,Active,"uniqueness assertion and contains '@' check"
+

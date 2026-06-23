@@ -31,10 +31,10 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Allure Report for JUnit 4 -->
+        <!-- Allure Report for TestNG -->
         <dependency>
             <groupId>io.qameta.allure</groupId>
-            <artifactId>allure-junit4</artifactId>
+            <artifactId>allure-testng</artifactId>
             <version>${allure.version}</version>
             <scope>test</scope>
         </dependency>
@@ -55,11 +55,11 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- JUnit (direct usage in tests) -->
+        <!-- TestNG (direct usage in tests) -->
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13.2</version>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>7.10.2</version>
             <scope>test</scope>
         </dependency>
 
@@ -79,7 +79,7 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Allure Java Commons (used by allure-junit4) -->
+        <!-- Allure Java Commons (used by allure-testng) -->
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-java-commons</artifactId>
@@ -108,10 +108,14 @@
                         <include>**/*Test.java</include>
                         <include>**/*Tests.java</include>
                     </includes>
+                    <excludes>
+                        <!-- Keep guardrail/framework checks out of default API execution + Allure -->
+                        <exclude>**/framework/TestCaseTraceabilityTest.java</exclude>
+                    </excludes>
                     <properties>
                         <property>
                             <name>listener</name>
-                            <value>com.apitesting.demo.tests.CustomAllureListener</value>
+                            <value>io.qameta.allure.testng.AllureTestNg,com.apitesting.demo.framework.CustomAllureListener</value>
                         </property>
                     </properties>
                     <argLine>
@@ -162,4 +166,21 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>traceability</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <test>com.apitesting.demo.framework.TestCaseTraceabilityTest</test>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

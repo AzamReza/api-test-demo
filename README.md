@@ -4,21 +4,35 @@ Single source of truth for this repository.
 
 ## Overview
 
-This project is a Java + Maven API automation framework for `https://jsonplaceholder.typicode.com` with:
+This is a Java + Maven API automation project for `https://jsonplaceholder.typicode.com` with:
 
-- REST API tests using RestAssured + JUnit 4
+- REST API tests using RestAssured + TestNG
 - Network mocking tests using WireMock
 - Allure reporting
-- Test case ID traceability from `src/test/resources/TEST_CASES_DOCUMENTATION.md`
+- Test case traceability mapped from `src/test/resources/TEST_CASES_DOCUMENTATION.csv`
 
 ## Current Test Suites
 
-- `JSONPlaceholderAPITest` (16 tests): CRUD, filtering, response-time checks
-- `AdvancedAPITest` (9 tests): deserialization, object assertions, consistency checks
-- `NetworkMockingTest` (10 tests): WireMock GET/POST/PUT/DELETE, errors, verification
-- `CoverageAPITest` (14 tests): contract checks, negative scenarios, query behavior, PATCH, operational headers
+### API and Mocking Suites (default run)
 
-Total automated tests: **49**
+- `PostsAPITest` (9 tests)
+- `CommentsAPITest` (8 tests)
+- `AlbumsAPITest` (5 tests)
+- `PhotosAPITest` (5 tests)
+- `TodosAPITest` (5 tests)
+- `UsersAPITest` (5 tests)
+- `NetworkMockingTest` (10 tests)
+
+Default automated tests: **47**
+
+### Guardrail Suite (separate profile)
+
+- `TestCaseTraceabilityTest` (2 tests)
+
+This suite validates:
+
+- documented methods match implemented methods
+- `@AllureId` values match documentation
 
 ## Project Structure
 
@@ -27,21 +41,30 @@ API-test-demo/
 ├── pom.xml
 ├── README.md
 ├── src/test/java/com/apitesting/demo/
+│   ├── framework/
+│   │   ├── BaseTest.java
+│   │   ├── CustomAllureListener.java
+│   │   └── TestCaseTraceabilityTest.java
 │   ├── models/
 │   │   ├── Comment.java
+│   │   ├── MockHttpResponse.java
 │   │   ├── Post.java
 │   │   └── User.java
 │   ├── tests/
-│   │   ├── AdvancedAPITest.java
-│   │   ├── BaseTest.java
-│   │   ├── CoverageAPITest.java
-│   │   ├── CustomAllureListener.java
-│   │   ├── JSONPlaceholderAPITest.java
-│   │   └── NetworkMockingTest.java
+│   │   ├── AlbumsAPITest.java
+│   │   ├── CommentsAPITest.java
+│   │   ├── NetworkMockingTest.java
+│   │   ├── PhotosAPITest.java
+│   │   ├── PostsAPITest.java
+│   │   ├── TodosAPITest.java
+│   │   └── UsersAPITest.java
 │   └── utils/
-│       └── APIConstants.java
+│       ├── APIConstants.java
+│       └── ConfigReader.java
 └── src/test/resources/
-    └── TEST_CASES_DOCUMENTATION.md
+    ├── config.properties
+    ├── TEST_CASES_DOCUMENTATION.csv
+    └── UAT_SCENARIOS.md
 ```
 
 ## Prerequisites
@@ -53,21 +76,34 @@ API-test-demo/
 
 ## Run Commands
 
-```bash
+Run default API + mocking suites (excludes traceability guardrail test):
+
+```powershell
 mvn clean test
+```
+
+Run traceability guardrail suite only:
+
+```powershell
+mvn -Ptraceability test
+```
+
+Generate Allure report after test execution:
+
+```powershell
 mvn allure:report
 ```
 
 Run a specific class:
 
-```bash
-mvn test -Dtest=JSONPlaceholderAPITest
+```powershell
+mvn test -Dtest=PostsAPITest
 ```
 
 Run a specific method:
 
-```bash
-mvn test -Dtest=JSONPlaceholderAPITest#testGetAllPosts
+```powershell
+mvn test -Dtest=PostsAPITest#testGetAllPosts
 ```
 
 ## Reporting and Logs
@@ -78,45 +114,35 @@ mvn test -Dtest=JSONPlaceholderAPITest#testGetAllPosts
 
 ## Test Case ID Integration
 
-Test IDs are auto-resolved from `src/test/resources/TEST_CASES_DOCUMENTATION.md` and applied to:
+Test IDs are auto-resolved from `src/test/resources/TEST_CASES_DOCUMENTATION.csv` and applied to:
 
-- Log lines (prefix format): `[TC-XXX-000] ...`
+- log lines: `[TC-XXX-000] ...`
 - Allure test name: `TC-XXX-000 - <test description>`
-- Allure label: `testCaseId`
-
-Example log format:
-
-```text
-[TC-ADV-007] Start test: Response Body Validation
-[TC-ADV-007] Test Response Body Validation - PASSED
-```
+- Allure labels: `testCaseId`, `AS_ID`
 
 ## Key Implementation Notes
 
-- `BaseTest.java`
-  - common setup for RestAssured and logging
+- `src/test/java/com/apitesting/demo/framework/BaseTest.java`
+  - shared RestAssured setup and logger wiring
   - Allure metadata setup before each test
-  - test case ID mapping and per-test context handling
-- `CustomAllureListener.java`
+  - test-case ID resolution and per-test context handling
+- `src/test/java/com/apitesting/demo/framework/CustomAllureListener.java`
   - removes package prefix from class names in Allure labels (`testClass`, `suite`)
+- `src/test/java/com/apitesting/demo/framework/TestCaseTraceabilityTest.java`
+  - validates documentation and test implementation are synchronized
 - `pom.xml`
-  - Surefire configured with Allure listener and `allure.results.directory`
-  - Allure report plugin configured
+  - Surefire registers `com.apitesting.demo.framework.CustomAllureListener`
+  - default run excludes `TestCaseTraceabilityTest`
+  - `traceability` profile runs only the guardrail suite
 
 ## Troubleshooting
 
 - If `mvn allure:report` says results directory not found, run tests first:
 
-```bash
+```powershell
 mvn clean test
 mvn allure:report
 ```
 
-- If live API tests fail, verify network access to `https://jsonplaceholder.typicode.com`.
-
+- If live API tests fail, verify access to `https://jsonplaceholder.typicode.com`.
 - If WireMock tests fail to start, check port `8080` availability.
-
-## Maintenance Rule
-
-Keep root-level docs minimal: this `README.md` is the only root markdown file.
-

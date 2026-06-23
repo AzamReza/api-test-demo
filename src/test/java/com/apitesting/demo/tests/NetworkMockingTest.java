@@ -1,17 +1,19 @@
 package com.apitesting.demo.tests;
 
+import com.apitesting.demo.framework.BaseTest;
 import com.apitesting.demo.utils.APIConstants;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
+import io.qameta.allure.AllureId;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.Story;
 import io.restassured.RestAssured;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.containing;
@@ -25,7 +27,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
-import static com.apitesting.demo.tests.BaseTest.logTest;
+import static com.apitesting.demo.framework.BaseTest.logTest;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
@@ -39,7 +41,7 @@ public class NetworkMockingTest extends BaseTest {
 
     private WireMockServer wireMockServer;
 
-    @Before
+    @BeforeMethod
     public void setupWireMock() {
         // Initialize WireMock server using configured mock port
         wireMockServer = new WireMockServer(APIConstants.MOCK_PORT);
@@ -50,7 +52,7 @@ public class NetworkMockingTest extends BaseTest {
         RestAssured.baseURI = APIConstants.MOCK_BASE_URL;
     }
 
-    @After
+    @AfterMethod
     public void teardown() {
         // Stop WireMock server after tests
         if (wireMockServer != null) {
@@ -61,6 +63,7 @@ public class NetworkMockingTest extends BaseTest {
     // ==================== Mocked GET Tests ====================
 
     @Test
+    @AllureId("TC-NMK-001")
     @Severity(SeverityLevel.CRITICAL)
     @Description("[Network Mocking] Verify mocked GET request for user data returns correct response")
     public void testMockedGetUserData() {
@@ -93,6 +96,7 @@ public class NetworkMockingTest extends BaseTest {
     }
 
     @Test
+    @AllureId("TC-NMK-002")
     @Severity(SeverityLevel.CRITICAL)
     @Description("[Network Mocking] Verify mocked GET request for posts list returns array response")
     public void testMockedGetPostsList() {
@@ -126,6 +130,7 @@ public class NetworkMockingTest extends BaseTest {
     // ==================== Mocked POST Tests ====================
 
     @Test
+    @AllureId("TC-NMK-003")
     @Severity(SeverityLevel.CRITICAL)
     @Description("[Network Mocking] Verify mocked POST request for creating new user")
     public void testMockedCreateUser() {
@@ -166,6 +171,7 @@ public class NetworkMockingTest extends BaseTest {
     // ==================== Mocked PUT Tests ====================
 
     @Test
+    @AllureId("TC-NMK-004")
     @Severity(SeverityLevel.NORMAL)
     @Description("[Network Mocking] Verify mocked PUT request for updating user data")
     public void testMockedUpdateUser() {
@@ -207,6 +213,7 @@ public class NetworkMockingTest extends BaseTest {
     // ==================== Mocked DELETE Tests ====================
 
     @Test
+    @AllureId("TC-NMK-005")
     @Severity(SeverityLevel.NORMAL)
     @Description("[Network Mocking] Verify mocked DELETE request for removing user")
     public void testMockedDeleteUser() {
@@ -228,6 +235,7 @@ public class NetworkMockingTest extends BaseTest {
     // ==================== Mock Server Verification Tests ====================
 
     @Test
+    @AllureId("TC-NMK-006")
     @Severity(SeverityLevel.NORMAL)
     @Description("[Network Mocking] Verify mock server received expected request")
     public void testVerifyMockServerRequest() {
@@ -255,6 +263,7 @@ public class NetworkMockingTest extends BaseTest {
     // ==================== Error Response Mocking Tests ====================
 
     @Test
+    @AllureId("TC-NMK-007")
     @Severity(SeverityLevel.NORMAL)
     @Description("[Network Mocking] Verify mocked error response for not found scenario")
     public void testMockedErrorResponse404() {
@@ -279,6 +288,7 @@ public class NetworkMockingTest extends BaseTest {
     }
 
     @Test
+    @AllureId("TC-NMK-008")
     @Severity(SeverityLevel.NORMAL)
     @Description("[Network Mocking] Verify mocked server error response")
     public void testMockedErrorResponse500() {
@@ -308,6 +318,7 @@ public class NetworkMockingTest extends BaseTest {
     // ==================== Query Parameter Mocking Tests ====================
 
     @Test
+    @AllureId("TC-NMK-009")
     @Severity(SeverityLevel.NORMAL)
     @Description("[Network Mocking] Verify mocked GET request with query parameters")
     public void testMockedGetWithQueryParameters() {
@@ -338,6 +349,7 @@ public class NetworkMockingTest extends BaseTest {
     // ==================== Multiple Requests Mocking Tests ====================
 
     @Test
+    @AllureId("TC-NMK-010")
     @Severity(SeverityLevel.NORMAL)
     @Description("[Network Mocking] Verify mocking multiple sequential API requests")
     public void testMockedMultipleSequentialRequests() {

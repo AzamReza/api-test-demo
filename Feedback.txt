@@ -1,5 +1,0 @@
-1. Create an API test case document under the resources folder
-2. Write the output to a log file and show it in the report
-3. Show the test case description in the report instead of the method name
-4. Create a properties file and keep all configurable items in it. 
-5. Keep Testcase ID in log and Reports
